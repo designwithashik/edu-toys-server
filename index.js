@@ -60,7 +60,16 @@ async function run() {
 
     app.patch('/toy/:id', async (req, res) => {
       const id = req.params.id;
-      console.log(id)
+      console.log(id);
+      const {name, availableQuantity, description, price, rating} = req.body;
+      const toy = {
+        $set: {
+          name: name,
+          availableQuantity: availableQuantity,
+          description: description,
+          price: price,
+          rating: rating
+      }}
     })
 
 
