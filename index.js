@@ -69,7 +69,11 @@ async function run() {
           description: description,
           price: price,
           rating: rating
-      }}
+        }
+      }
+      const filter = {_id: new ObjectId(id)}
+      const result = await toysCollection.updateOne(filter, toy);
+      res.send(result)
     })
 
 
