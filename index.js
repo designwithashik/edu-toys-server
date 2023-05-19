@@ -35,8 +35,14 @@ async function run() {
       const toysCollection=client.db('EduToys').collection('toys')
 
 
-      app.get('/toys', async(req, res) => {
-          const result = await toysCollection.find().toArray()
+    app.get('/toys', async (req, res) => {
+      const email = req.query.email;
+      console.log(email)
+          let query = {};
+          if (req.query?.email) {
+              query = {sellerEmail: email}
+          }
+          const result = await toysCollection.find(query).toArray()
           res.send(result)
       })
     
@@ -60,7 +66,6 @@ async function run() {
 
     app.patch('/toy/:id', async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const {name, availableQuantity, description, price, rating} = req.body;
       const toy = {
         $set: {
