@@ -37,12 +37,24 @@ async function run() {
 
     app.get('/toys', async (req, res) => {
       const email = req.query.email;
-      console.log(email)
           let query = {};
           if (req.query?.email) {
               query = {sellerEmail: email}
           }
           const result = await toysCollection.find(query).toArray()
+          res.send(result)
+      })
+    
+    // toy search
+    app.get('/toy', async (req, res) => {
+      const name = req.query.name;
+      const sortDirection = req.query.sort === 'asc' ? 1 : -1; 
+          let query = {};
+      if (req.query?.name) {
+            console.log(name)
+              query = {name: { $regex: name, $options: 'i' } }
+          }
+          const result = await toysCollection.find(query).sort({price: sortDirection}).limit(20).toArray()
           res.send(result)
       })
     
@@ -66,13 +78,14 @@ async function run() {
 
     app.patch('/toy/:id', async (req, res) => {
       const id = req.params.id;
-      const {name, availableQuantity, description, price, rating} = req.body;
+      const {name, availableQuantity, description, price, rating, subCategory} = req.body;
       const toy = {
         $set: {
           name: name,
           availableQuantity: availableQuantity,
           description: description,
-          price: price,
+          subCategory: subCategory,
+          price: price.toFixed(2),
           rating: rating
         }
       }
