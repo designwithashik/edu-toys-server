@@ -4,10 +4,16 @@ const port = process.env.PORT || 3000;
 require("dotenv").config();
 const cors = require('cors')
 
+const corsConfig = {
+  origin: '',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}
 
 //middleware
 
-app.use(cors());
+app.use(cors(corsConfig));
+app.options("", cors(corsConfig))
 app.use(express.json());
 
 
